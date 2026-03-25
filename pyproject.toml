@@ -1,0 +1,18 @@
+[project]
+name = "ozon-api-fastapi"
+version = "0.1.0"
+description = "Ozon 数据采集 FastAPI 后端，使用 curl_cffi 处理 403 challenge"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.34.0",
+    "curl-cffi>=0.7.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "requests>=2.31.0",
+    "loguru>=0.7.3",
+    "pycryptodome>=3.20.0",
+    "opencv-python>=4.8.0",
+    "numpy>=1.26.0",
+]
