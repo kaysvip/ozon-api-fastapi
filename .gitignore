@@ -9,6 +9,13 @@ wheels/
 # Virtual environments
 .venv
 
+# Node（仅测试用的 JS 参考实现依赖）
+node_modules/
+package-lock.json
+
+# pytest
+.pytest_cache/
+
 # IDE
 .idea/
 

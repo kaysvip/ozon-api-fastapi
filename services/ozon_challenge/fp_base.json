@@ -1,0 +1,813 @@
+{
+ "challenge": null,
+ "user_agent": null,
+ "browser": {
+  "isFirefox": false,
+  "isChrome": true,
+  "isSafari": false,
+  "isOpera": false,
+  "isIE": false,
+  "isEdge": false,
+  "isEdgeChromium": true,
+  "isBlink": true
+ },
+ "props": "838|839|1194|297|1053|-1|844|902|1228|155|347|737|82|414|75",
+ "screen_1": {
+  "@proto:Screen": {
+   "@proto:EventTarget": {},
+   "@get:isExtended": false,
+   "@get:onchange": "_n_",
+   "@get:orientation": {
+    "@proto:ScreenOrientation": {
+     "@proto:EventTarget": "_m_",
+     "@get:onchange": "_n_",
+     "@get:type": "landscape-primary",
+     "@get:angle": 0
+    }
+   },
+   "@get:availTop": 0,
+   "@get:availLeft": 0,
+   "@get:pixelDepth": 24,
+   "@get:colorDepth": 24,
+   "@get:height": 914,
+   "@get:width": 1912,
+   "@get:availHeight": 914,
+   "@get:availWidth": 1912
+  }
+ },
+ "screen_2": {
+  "tiWidth": 1912,
+  "tiHeight": 914,
+  "toWidth": 1928,
+  "toHeight": 1002,
+  "dbcr": {
+   "x": 0,
+   "y": 0,
+   "width": 1912,
+   "height": 914,
+   "top": 0,
+   "right": 1912,
+   "bottom": 914,
+   "left": 0
+  },
+  "sx": 10,
+  "sy": 10,
+  "sch": 914,
+  "scw": 1912
+ },
+ "screen_3": {
+  "@val:dwh": false,
+  "@val:dwvs": "visible",
+  "@val:dfe": true,
+  "@val:dwfe": true,
+  "@val:wv": {
+   "@proto:VisualViewport": {
+    "@proto:EventTarget": {},
+    "@get:onscrollend": "_n_",
+    "@get:onscroll": "_n_",
+    "@get:onresize": "_n_",
+    "@get:scale": 1,
+    "@get:height": 914,
+    "@get:width": 1912,
+    "@get:pageTop": 0,
+    "@get:pageLeft": 0,
+    "@get:offsetTop": 0,
+    "@get:offsetLeft": 0
+   }
+  }
+ },
+ "touch": false,
+ "battery": {
+  "@proto:BatteryManager": {
+   "@get:level": 1,
+   "@get:dischargingTime": null,
+   "@get:chargingTime": 0,
+   "@get:charging": true
+  }
+ },
+ "location": null,
+ "context": {
+  "@val:gcrw": false,
+  "@val:wk": false,
+  "@val:n": "_u_",
+  "@val:ph": "_u_",
+  "@val:cph": "_u_",
+  "@val:opera": "_u_",
+  "@val:opr": "_u_",
+  "@val:chrome": {
+   "@val:app": {
+    "@val:RunningState": "_m_",
+    "@val:InstallState": "_m_",
+    "@val:runningState": "_fn_",
+    "@val:installState": "_fn_",
+    "@val:getIsInstalled": "_fn_",
+    "@val:getDetails": "_fn_",
+    "@val:isInstalled": false
+   },
+   "@val:csi": "_fn_",
+   "@val:loadTimes": "_fn_"
+  },
+  "@val:w": false,
+  "@val:wsc": true
+ },
+ "storage": {
+  "quota": 6442450944,
+  "usage": 0,
+  "usageDetails": {}
+ },
+ "hev": {
+  "architecture": "x86",
+  "bitness": "64",
+  "brands": [
+   {
+    "brand": "Not=A?Brand",
+    "version": "99"
+   },
+   {
+    "brand": "Microsoft Edge",
+    "version": "151"
+   },
+   {
+    "brand": "Chromium",
+    "version": "151"
+   }
+  ],
+  "formFactors": [
+   "Desktop"
+  ],
+  "fullVersionList": [
+   {
+    "brand": "Not=A?Brand",
+    "version": "99.0.0.0"
+   },
+   {
+    "brand": "Microsoft Edge",
+    "version": "151.0.4129.59"
+   },
+   {
+    "brand": "Chromium",
+    "version": "151.0.7922.72"
+   }
+  ],
+  "mobile": false,
+  "model": "",
+  "platform": "Windows",
+  "platformVersion": "19.0.0",
+  "uaFullVersion": "151.0.4129.59",
+  "wow64": false
+ },
+ "media_devices": {
+  "md": [
+   {
+    "kind": "audioinput",
+    "label": "",
+    "deviceId": "",
+    "groupId": ""
+   },
+   {
+    "kind": "audiooutput",
+    "label": "",
+    "deviceId": "",
+    "groupId": ""
+   }
+  ],
+  "edn": "enumerateDevices",
+  "ed": "function enumerateDevices() { [native code] }"
+ },
+ "navigator": {
+  "@proto:Navigator": {
+   "@val:unregisterProtocolHandler": "_fn_",
+   "@val:registerProtocolHandler": "_fn_",
+   "@val:getInterestGroupAdAuctionData": "_fn_",
+   "@val:getInstalledRelatedApps": "_fn_",
+   "@val:deprecatedURNToURL": "_fn_",
+   "@val:deprecatedReplaceInURN": "_fn_",
+   "@val:updateAdInterestGroups": "_fn_",
+   "@val:leaveAdInterestGroup": "_fn_",
+   "@val:joinAdInterestGroup": "_fn_",
+   "@val:createAuctionNonce": "_fn_",
+   "@val:clearOriginJoinedAdInterestGroups": "_fn_",
+   "@val:webkitGetUserMedia": "_fn_",
+   "@val:setAppBadge": "_fn_",
+   "@val:requestMediaKeySystemAccess": "_fn_",
+   "@val:requestMIDIAccess": "_fn_",
+   "@val:getUserMedia": "_fn_",
+   "@val:getBattery": "_fn_",
+   "@val:clearAppBadge": "_fn_",
+   "@val:share": "_fn_",
+   "@val:canShare": "_fn_",
+   "@val:canLoadAdAuctionFencedFrame": "_fn_",
+   "@val:runAdAuction": "_fn_",
+   "@val:adAuctionComponents": "_fn_",
+   "@get:storageBuckets": {
+    "@proto:StorageBucketManager": {
+     "@val:constructor": "_fn_",
+     "@val:open": "_fn_",
+     "@val:keys": "_fn_",
+     "@val:delete": "_fn_"
+    }
+   },
+   "@get:xr": {
+    "@proto:XRSystem": {
+     "@proto:EventTarget": {
+      "@val:constructor": "_fn_",
+      "@val:when": "_fn_",
+      "@val:removeEventListener": "_fn_",
+      "@val:dispatchEvent": "_fn_",
+      "@val:addEventListener": "_fn_"
+     },
+     "@val:constructor": "_fn_",
+     "@val:requestSession": "_fn_",
+     "@val:isSessionSupported": "_fn_",
+     "@get:ondevicechange": "_n_"
+    }
+   },
+   "@get:usb": {
+    "@proto:USB": {
+     "@proto:EventTarget": "@ref:7",
+     "@val:requestDevice": "_fn_",
+     "@val:constructor": "_fn_",
+     "@val:getDevices": "_fn_",
+     "@get:ondisconnect": "_n_",
+     "@get:onconnect": "_n_"
+    }
+   },
+   "@get:serial": {
+    "@proto:Serial": {
+     "@proto:EventTarget": "@ref:7",
+     "@val:requestPort": "_fn_",
+     "@val:constructor": "_fn_",
+     "@val:getPorts": "_fn_",
+     "@get:ondisconnect": "_n_",
+     "@get:onconnect": "_n_"
+    }
+   },
+   "@get:presentation": {
+    "@proto:Presentation": {
+     "@val:constructor": "_fn_",
+     "@get:receiver": "_n_",
+     "@get:defaultRequest": "_n_"
+    }
+   },
+   "@get:mediaSession": {
+    "@proto:MediaSession": {
+     "@val:constructor": "_fn_",
+     "@val:setPositionState": "_fn_",
+     "@val:setMicrophoneActive": "_fn_",
+     "@val:setCameraActive": "_fn_",
+     "@val:setActionHandler": "_fn_",
+     "@get:playbackState": "none",
+     "@get:metadata": "_n_"
+    }
+   },
+   "@get:hid": {
+    "@proto:HID": {
+     "@proto:EventTarget": "@ref:7",
+     "@val:requestDevice": "_fn_",
+     "@val:constructor": "_fn_",
+     "@val:getDevices": "_fn_",
+     "@get:ondisconnect": "_n_",
+     "@get:onconnect": "_n_"
+    }
+   },
+   "@get:devicePosture": {
+    "@proto:DevicePosture": {
+     "@proto:EventTarget": "@ref:7",
+     "@val:constructor": "_fn_",
+     "@get:onchange": "_n_",
+     "@get:type": "continuous"
+    }
+   },
+   "@get:permissions": {
+    "@proto:Permissions": {
+     "@val:constructor": "_fn_",
+     "@val:query": "_fn_"
+    }
+   },
+   "@get:mediaCapabilities": {
+    "@proto:MediaCapabilities": {
+     "@val:constructor": "_fn_",
+     "@val:encodingInfo": "_fn_",
+     "@val:decodingInfo": "_fn_"
+    }
+   },
+   "@get:ink": {
+    "@proto:Ink": {
+     "@val:constructor": "_fn_",
+     "@val:requestPresenter": "_fn_"
+    }
+   },
+   "@get:login": {
+    "@proto:NavigatorLogin": {
+     "@val:constructor": "_fn_",
+     "@val:setStatus": "_fn_"
+    }
+   },
+   "@get:gpu": {
+    "@proto:GPU": {
+     "@val:constructor": "_fn_",
+     "@val:requestAdapter": "_fn_",
+     "@val:getPreferredCanvasFormat": "_fn_",
+     "@get:wgslLanguageFeatures": {
+      "@proto:WGSLLanguageFeatures": "_m_"
+     }
+    }
+   },
+   "@get:storage": {
+    "@proto:StorageManager": {
+     "@val:persist": "_fn_",
+     "@val:getDirectory": "_fn_",
+     "@val:constructor": "_fn_",
+     "@val:persisted": "_fn_",
+     "@val:estimate": "_fn_"
+    }
+   },
+   "@get:locks": {
+    "@proto:LockManager": {
+     "@val:constructor": "_fn_",
+     "@val:request": "_fn_",
+     "@val:query": "_fn_"
+    }
+   },
+   "@get:userAgentData": {
+    "@proto:NavigatorUAData": {
+     "@val:constructor": "_fn_",
+     "@val:toJSON": "_fn_",
+     "@val:getHighEntropyValues": "_fn_",
+     "@get:platform": "Windows",
+     "@get:mobile": false,
+     "@get:brands": {
+      "@arr:length": 3,
+      "@arr:2": "_m_",
+      "@arr:1": "_m_",
+      "@arr:0": "_m_"
+     }
+    }
+   },
+   "@get:deviceMemory": 32,
+   "@get:wakeLock": {
+    "@proto:WakeLock": {
+     "@val:constructor": "_fn_",
+     "@val:request": "_fn_"
+    }
+   },
+   "@get:virtualKeyboard": {
+    "@proto:VirtualKeyboard": {
+     "@proto:EventTarget": "@ref:7",
+     "@val:constructor": "_fn_",
+     "@val:show": "_fn_",
+     "@val:hide": "_fn_",
+     "@get:ongeometrychange": "_n_",
+     "@get:overlaysContent": false,
+     "@get:boundingRect": {
+      "@proto:DOMRect": "_m_"
+     }
+    }
+   },
+   "@get:serviceWorker": {
+    "@proto:ServiceWorkerContainer": {
+     "@getter:ready": "function get ready() { [native code] }",
+     "@proto:EventTarget": "@ref:7",
+     "@val:constructor": "_fn_",
+     "@val:startMessages": "_fn_",
+     "@val:register": "_fn_",
+     "@val:getRegistrations": "_fn_",
+     "@val:getRegistration": "_fn_",
+     "@get:onmessageerror": "_n_",
+     "@get:onmessage": "_n_",
+     "@get:oncontrollerchange": "_n_",
+     "@get:ready": {
+      "@proto:Promise": "_m_"
+     },
+     "@get:controller": "_n_"
+    }
+   },
+   "@get:mediaDevices": {
+    "@proto:MediaDevices": {
+     "@proto:EventTarget": "@ref:7",
+     "@val:constructor": "_fn_",
+     "@val:setCaptureHandleConfig": "_fn_",
+     "@val:getDisplayMedia": "_fn_",
+     "@val:getUserMedia": "_fn_",
+     "@val:getSupportedConstraints": "_fn_",
+     "@val:enumerateDevices": "_fn_",
+     "@get:ondevicechange": "_n_"
+    }
+   },
+   "@get:managed": {
+    "@proto:NavigatorManagedData": {
+     "@proto:EventTarget": "@ref:7",
+     "@val:constructor": "_fn_",
+     "@val:getManagedConfiguration": "_fn_",
+     "@get:onmanagedconfigurationchange": "_n_"
+    }
+   },
+   "@get:keyboard": {
+    "@proto:Keyboard": {
+     "@val:constructor": "_fn_",
+     "@val:unlock": "_fn_",
+     "@val:lock": "_fn_",
+     "@val:getLayoutMap": "_fn_"
+    }
+   },
+   "@get:credentials": {
+    "@proto:CredentialsContainer": {
+     "@val:constructor": "_fn_",
+     "@val:store": "_fn_",
+     "@val:preventSilentAccess": "_fn_",
+     "@val:get": "_fn_",
+     "@val:create": "_fn_"
+    }
+   },
+   "@get:clipboard": {
+    "@proto:Clipboard": {
+     "@proto:EventTarget": "@ref:7",
+     "@val:constructor": "_fn_",
+     "@val:writeText": "_fn_",
+     "@val:write": "_fn_",
+     "@val:readText": "_fn_",
+     "@val:read": "_fn_",
+     "@get:onclipboardchange": "_n_"
+    }
+   },
+   "@get:bluetooth": {
+    "@proto:Bluetooth": {
+     "@proto:EventTarget": "@ref:7",
+     "@val:constructor": "_fn_",
+     "@val:requestDevice": "_fn_",
+     "@val:getAvailability": "_fn_"
+    }
+   },
+   "@get:protectedAudience": {
+    "@proto:ProtectedAudience": {
+     "@val:constructor": "_fn_",
+     "@val:queryFeatureSupport": "_fn_"
+    }
+   },
+   "@get:deprecatedRunAdAuctionEnforcesKAnonymity": false,
+   "@val:constructor": "_fn_",
+   "@val:vibrate": "_fn_",
+   "@val:sendBeacon": "_fn_",
+   "@val:javaEnabled": "_fn_",
+   "@val:getGamepads": "_fn_",
+   "@get:connection": {
+    "@proto:NetworkInformation": {
+     "@proto:EventTarget": "@ref:7",
+     "@val:constructor": "_fn_",
+     "@get:saveData": false,
+     "@get:downlink": null,
+     "@get:rtt": null,
+     "@get:effectiveType": null,
+     "@get:onchange": "_n_"
+    }
+   },
+   "@get:pdfViewerEnabled": true,
+   "@get:mimeTypes": {
+    "@proto:MimeTypeArray": {
+     "@val:constructor": "_fn_",
+     "@val:namedItem": "_fn_",
+     "@val:item": "_fn_",
+     "@get:length": 2
+    },
+    "@val:text/pdf": {
+     "@proto:MimeType": {
+      "@val:constructor": "_fn_",
+      "@get:enabledPlugin": "_m_",
+      "@get:description": "Portable Document Format",
+      "@get:suffixes": "pdf",
+      "@get:type": "text/pdf"
+     }
+    },
+    "@val:application/pdf": {
+     "@proto:MimeType": "@ref:65"
+    },
+    "@val:1": "@ref:64",
+    "@val:0": "@ref:66"
+   },
+   "@get:plugins": {
+    "@proto:PluginArray": {
+     "@val:constructor": "_fn_",
+     "@val:refresh": "_fn_",
+     "@val:namedItem": "_fn_",
+     "@val:item": "_fn_",
+     "@get:length": 5
+    },
+    "@val:WebKit built-in PDF": {
+     "@proto:Plugin": {
+      "@val:constructor": "_fn_",
+      "@val:namedItem": "_fn_",
+      "@val:item": "_fn_",
+      "@get:length": 2,
+      "@get:description": "Portable Document Format",
+      "@get:filename": "internal-pdf-viewer",
+      "@get:name": "WebKit built-in PDF"
+     },
+     "@val:text/pdf": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:application/pdf": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:1": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:0": {
+      "@proto:MimeType": "_m_"
+     }
+    },
+    "@val:Microsoft Edge PDF Viewer": {
+     "@proto:Plugin": "@ref:70",
+     "@val:text/pdf": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:application/pdf": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:1": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:0": {
+      "@proto:MimeType": "_m_"
+     }
+    },
+    "@val:Chromium PDF Viewer": {
+     "@proto:Plugin": "@ref:70",
+     "@val:text/pdf": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:application/pdf": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:1": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:0": {
+      "@proto:MimeType": "_m_"
+     }
+    },
+    "@val:Chrome PDF Viewer": {
+     "@proto:Plugin": "@ref:70",
+     "@val:text/pdf": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:application/pdf": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:1": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:0": {
+      "@proto:MimeType": "_m_"
+     }
+    },
+    "@val:PDF Viewer": {
+     "@proto:Plugin": "@ref:70",
+     "@val:text/pdf": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:application/pdf": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:1": {
+      "@proto:MimeType": "_m_"
+     },
+     "@val:0": {
+      "@proto:MimeType": "_m_"
+     }
+    },
+    "@val:4": "@ref:69",
+    "@val:3": "@ref:75",
+    "@val:2": "@ref:80",
+    "@val:1": "@ref:85",
+    "@val:0": "@ref:90"
+   },
+   "@get:webdriver": false,
+   "@get:onLine": true,
+   "@get:languages": {
+    "@arr:length": 4,
+    "@arr:3": "en-US",
+    "@arr:2": "en-GB",
+    "@arr:1": "en",
+    "@arr:0": "zh-CN"
+   },
+   "@get:language": "zh-CN",
+   "@get:userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0",
+   "@get:product": "Gecko",
+   "@get:platform": "Win32",
+   "@get:appVersion": "5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0",
+   "@get:appName": "Netscape",
+   "@get:appCodeName": "Mozilla",
+   "@get:cookieEnabled": true,
+   "@get:hardwareConcurrency": 24,
+   "@get:windowControlsOverlay": {
+    "@proto:WindowControlsOverlay": {
+     "@proto:EventTarget": "@ref:7",
+     "@val:constructor": "_fn_",
+     "@val:getTitlebarAreaRect": "_fn_",
+     "@get:ongeometrychange": "_n_",
+     "@get:visible": false
+    }
+   },
+   "@get:webkitPersistentStorage": {
+    "@proto:Object": {
+     "@val:requestQuota": "_fn_",
+     "@val:queryUsageAndQuota": "_fn_"
+    }
+   },
+   "@get:webkitTemporaryStorage": "@ref:98",
+   "@get:doNotTrack": "_n_",
+   "@get:geolocation": {
+    "@proto:Geolocation": {
+     "@val:constructor": "_fn_",
+     "@val:watchPosition": "_fn_",
+     "@val:getCurrentPosition": "_fn_",
+     "@val:clearWatch": "_fn_"
+    }
+   },
+   "@get:userActivation": {
+    "@proto:UserActivation": {
+     "@val:constructor": "_fn_",
+     "@get:isActive": false,
+     "@get:hasBeenActive": true
+    }
+   },
+   "@get:scheduling": {
+    "@proto:Scheduling": {
+     "@val:constructor": "_fn_",
+     "@val:isInputPending": "_fn_"
+    }
+   },
+   "@get:maxTouchPoints": 10,
+   "@get:vendor": "Google Inc.",
+   "@get:productSub": "20030107",
+   "@get:vendorSub": ""
+  }
+ },
+ "performance": null,
+ "video": {
+  "audio/aac": "probably",
+  "audio/x-m4a": "maybe",
+  "video/mp4; codecs=\"avc1.42E01E\"": "probably"
+ },
+ "webgl": {
+  "ext": "ANGLE_instanced_arrays;EXT_blend_minmax;EXT_clip_control;EXT_color_buffer_half_float;EXT_depth_clamp;EXT_disjoint_timer_query;EXT_float_blend;EXT_frag_depth;EXT_polygon_offset_clamp;EXT_sRGB;EXT_shader_texture_lod;EXT_texture_compression_bptc;EXT_texture_compression_rgtc;EXT_texture_filter_anisotropic;EXT_texture_mirror_clamp_to_edge;KHR_parallel_shader_compile;OES_element_index_uint;OES_fbo_render_mipmap;OES_standard_derivatives;OES_texture_float;OES_texture_float_linear;OES_texture_half_float;OES_texture_half_float_linear;OES_vertex_array_object;WEBGL_blend_func_extended;WEBGL_color_buffer_float;WEBGL_compressed_texture_s3tc;WEBGL_compressed_texture_s3tc_srgb;WEBGL_debug_renderer_info;WEBGL_debug_shaders;WEBGL_depth_texture;WEBGL_draw_buffers;WEBGL_lose_context;WEBGL_multi_draw;WEBGL_polygon_mode",
+  "ext_vec": "ANGLE_instanced_arrays;EXT_blend_minmax;EXT_clip_control;EXT_color_buffer_half_float;EXT_depth_clamp;EXT_disjoint_timer_query;EXT_float_blend;EXT_frag_depth;EXT_polygon_offset_clamp;EXT_sRGB;EXT_shader_texture_lod;EXT_texture_compression_bptc;EXT_texture_compression_rgtc;EXT_texture_filter_anisotropic;EXT_texture_mirror_clamp_to_edge;KHR_parallel_shader_compile;OES_element_index_uint;OES_fbo_render_mipmap;OES_standard_derivatives;OES_texture_float;OES_texture_float_linear;OES_texture_half_float;OES_texture_half_float_linear;OES_vertex_array_object;WEBGL_blend_func_extended;WEBGL_color_buffer_float;WEBGL_compressed_texture_s3tc;WEBGL_compressed_texture_s3tc_srgb;WEBGL_debug_renderer_info;WEBGL_debug_shaders;WEBGL_depth_texture;WEBGL_draw_buffers;WEBGL_lose_context;WEBGL_multi_draw;WEBGL_polygon_mode",
+  "renderer": "WebKit WebGL",
+  "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+  "gp": "function getParameter() { [native code] }",
+  "gse": "function getSupportedExtensions() { [native code] }",
+  "x": {
+   "@proto:WebGLRenderingContext": {
+    "@get:canvas": {
+     "@proto:HTMLCanvasElement": "_m_"
+    }
+   }
+  },
+  "hash": "f3bd24f5b153d57f5817372fd5f22573",
+  "unmasked_vendor": "Google Inc. (NVIDIA)",
+  "unmasked_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 Ti SUPER (0x00002705) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+ },
+ "canvas": {
+  "hash": "f875c525afac4307380cc6366061bb10"
+ },
+ "fn_1": null,
+ "fn_2": {
+  "f": "111111111111111"
+ },
+ "fn_3": {
+  "@f": "function Function() { [native code] }",
+  "@proto:Function": {
+   "@f": "function () { [native code] }",
+   "@get:arguments": "TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode functions or the arguments objects for calls to them",
+   "@get:caller": "TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode functions or the arguments objects for calls to them",
+   "@val:toString": {
+    "@f": "function toString() { [native code] }",
+    "@proto:Function": "@ref:2",
+    "@val:name": "toString",
+    "@val:length": 0
+   },
+   "@val:call": {
+    "@f": "function call() { [native code] }",
+    "@proto:Function": "@ref:2",
+    "@val:name": "call",
+    "@val:length": 1
+   },
+   "@val:bind": {
+    "@f": "function bind() { [native code] }",
+    "@proto:Function": "@ref:2",
+    "@val:name": "bind",
+    "@val:length": 1
+   },
+   "@val:apply": {
+    "@f": "function apply() { [native code] }",
+    "@proto:Function": "@ref:2",
+    "@val:name": "apply",
+    "@val:length": 2
+   },
+   "@val:constructor": "@ref:1",
+   "@val:name": "",
+   "@val:length": 0
+  },
+  "@val:prototype": "@ref:2",
+  "@val:name": "Function",
+  "@val:length": 1
+ },
+ "ts": null,
+ "nonce": null,
+ "pzs": null,
+ "pzc": null,
+ "css": {
+  "color-gamut": [
+   "srgb"
+  ],
+  "min-resolution": [
+   "96dpi"
+  ],
+  "prefers-contrast": [
+   "no-preference"
+  ],
+  "dynamic-range": [
+   "standard"
+  ],
+  "video-dynamic-range": [],
+  "any-hover": [
+   "hover"
+  ],
+  "any-pointer": [
+   "coarse"
+  ],
+  "pointer": [
+   "fine"
+  ],
+  "hover": [
+   "hover"
+  ],
+  "update": [
+   "fast"
+  ],
+  "overflow-block": [
+   "scroll"
+  ],
+  "overflow-inline": [
+   "scroll"
+  ],
+  "inverted-colors": [],
+  "prefers-reduced-motion": [
+   "no-preference"
+  ],
+  "prefers-reduced-transparency": [
+   "no-preference"
+  ],
+  "scripting": [
+   "enabled"
+  ],
+  "forced-colors": [
+   "none"
+  ],
+  "prefers-color-scheme": [
+   "light"
+  ],
+  "orientation": [
+   "landscape"
+  ],
+  "scan": [],
+  "max-monochrome": [
+   "0"
+  ],
+  "-webkit-min-device-pixel-ratio": [
+   "1"
+  ]
+ },
+ "rtc": {
+  "video": [
+   "video/VP8:90000::",
+   "video/rtx:90000::",
+   "video/H264:90000::level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f",
+   "video/H264:90000::level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f",
+   "video/H264:90000::level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f",
+   "video/H264:90000::level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f",
+   "video/H264:90000::level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=4d001f",
+   "video/H264:90000::level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=4d001f",
+   "video/AV1:90000::level-idx=5;profile=0;tier=0",
+   "video/VP9:90000::profile-id=0",
+   "video/VP9:90000::profile-id=2",
+   "video/H264:90000::level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640032",
+   "video/red:90000::",
+   "video/ulpfec:90000::"
+  ],
+  "audio": [
+   "audio/opus:48000:2:minptime=10;useinbandfec=1",
+   "audio/red:48000:2:",
+   "audio/G722:8000:1:",
+   "audio/PCMU:8000:1:",
+   "audio/PCMA:8000:1:",
+   "audio/CN:8000:1:",
+   "audio/telephone-event:48000:1:",
+   "audio/telephone-event:8000:1:"
+  ]
+ },
+ "fonts": "00000001100100000111000011110011010010000011010100011111100011111111000111111",
+ "browser_2": null,
+ "timings": null,
+ "ctm": null
+}

@@ -1,13 +1,12 @@
 """
 Ozon 请求客户端 — 使用 curl_cffi 发起请求，自动处理 403 challenge
 
-与 ozon_api.py 中 OzonApi 的核心逻辑一致。
+challenge 默认在本地求解（services/ozon_challenge），不依赖外部服务；
+求解失败时可回退到 OZON_CHALLENGE_HOST。
 """
 
-import json
 import logging
 import re
-import threading
 import time
 from typing import Optional
 
@@ -15,11 +14,9 @@ import requests
 from curl_cffi import Session
 
 from app.config import settings
-from utils.random_tools import (
-    rand_get_user_agent,
-    random_fingerprint,
-    extract_chrome_version,
-)
+from services.ozon_captcha.captcha_solver import build_captcha_result
+from services.ozon_challenge import UaProfile, is_js_challenge, solve_challenge
+from services.ozon_challenge.profile import get_profile
 
 logger = logging.getLogger("ozon_client")
 
@@ -66,58 +63,20 @@ _SELLER_HEADERS = {
 
 
 # ============================================================
-# 指纹缓存
+# 指纹档案
 # ============================================================
 
-_fingerprint_cache: tuple | None = None
-_fingerprint_lock = threading.Lock()
+def _headers_for(profile: UaProfile) -> tuple[dict, dict]:
+    """
+    按档案改写两套请求头。
 
-
-def _generate_fingerprint_config() -> tuple:
-    """生成随机指纹配置（模块级缓存，只请求一次）"""
-    global _fingerprint_cache
-    if _fingerprint_cache is not None:
-        return _fingerprint_cache
-
-    with _fingerprint_lock:
-        if _fingerprint_cache is not None:
-            return _fingerprint_cache
-
-        ua = _OZON_HEADERS['user-agent']
-        impersonate = "chrome136"
-        unmasked_vendor = ""
-        unmasked_renderer = ""
-
-        ua_model = rand_get_user_agent(version="140,141,142,143,144")
-        if ua_model:
-            ua = ua_model.ua
-            impersonate = extract_chrome_version(ua)
-            try:
-                client_hints_json = json.dumps(ua_model.clientHints.model_dump(by_alias=True))
-                fp_model = random_fingerprint(ua, client_hints_json)
-                if fp_model:
-                    unmasked_vendor = fp_model.webglConfig.unmaskedVendor
-                    unmasked_renderer = fp_model.webglConfig.unmaskedRenderer
-            except Exception:
-                pass
-            logger.info(f"[指纹] UA={ua}, impersonate={impersonate}, vendor={unmasked_vendor}")
-        else:
-            logger.debug("[指纹] 获取随机UA失败, 使用默认配置")
-
-        version = impersonate.replace("chrome", "")
-        ozon_headers = dict(_OZON_HEADERS)
-        ozon_headers.update({
-            'user-agent': ua,
-            'sec-ch-ua': f'"Google Chrome";v="{version}", "Chromium";v="{version}", "Not A(Brand";v="24"',
-        })
-        seller_headers = dict(_SELLER_HEADERS)
-        seller_headers.update({
-            'user-agent': ua,
-            'sec-ch-ua': f'"Google Chrome";v="{version}", "Chromium";v="{version}", "Not A(Brand";v="24"',
-        })
-
-        _fingerprint_cache = (ua, impersonate, unmasked_vendor, unmasked_renderer, ozon_headers, seller_headers)
-        return _fingerprint_cache
+    user-agent 与 sec-ch-ua 必须和 fp 里的值完全一致：
+    browser_2 的 CRC32 是拿 user-agent 算的，hev.brands 又要和 sec-ch-ua 对得上。
+    """
+    patch = profile.nav_headers()
+    ozon_headers = {**_OZON_HEADERS, **patch}
+    seller_headers = {**_SELLER_HEADERS, **patch}
+    return ozon_headers, seller_headers
 
 
 # ============================================================
@@ -167,7 +126,13 @@ def _extract_redirect_url(html: str) -> str | None:
 
 def get_token_and_fp(challenge: str, user_agent: str = "",
                      unmasked_vendor: str = "", unmasked_renderer: str = "") -> tuple[str, str]:
-    """调用 challenge 解析服务获取 token 和 fp"""
+    """
+    调用外部 challenge 解析服务获取 token 和 fp。
+
+    本地求解（services/ozon_challenge）上线后这条路只作回退：
+    本地拿得到整页 HTML，能算出 browser_2 和调用栈；这里只有 challenge 串，
+    信息量更少。/api/v1/ozon_abt/get_token_and_fp 接口仍然透传到这里。
+    """
     json_data = {
         "challenge": challenge,
         "user_agent": user_agent,
@@ -194,47 +159,110 @@ def get_token_and_fp(challenge: str, user_agent: str = "",
 class OzonClient:
     """为每个 API 请求创建的轻量客户端，使用 curl_cffi Session"""
 
-    def __init__(self, cookies_str: str = "", proxy: str = ""):
+    def __init__(self, cookies_str: str = "", proxy: str = "", profile: UaProfile | None = None):
         self._cookies = parse_cookies_to_dict(cookies_str)
         self._proxies = _build_proxies(proxy)
-        (self._ua, self._impersonate, self._unmasked_vendor, self._unmasked_renderer,
-         self._ozon_headers, self._seller_headers) = _generate_fingerprint_config()
+        # 每个客户端取一份档案（来自进程级档案池），而不是全进程共用一套指纹
+        self._profile = profile or get_profile(settings.profile_pool_size)
+        self._impersonate = self._profile.impersonate
+        self._ozon_headers, self._seller_headers = _headers_for(self._profile)
         self._session = Session(impersonate=self._impersonate)
         if self._cookies:
             self._session.cookies.update(self._cookies)
         self.last_error: str = ""
 
-    def _handle_challenge(self, response) -> bool:
-        """处理 403 challenge，返回 True 表示已处理（应重试）"""
-        if response.status_code != 403:
-            return False
-        try:
-            challenge = re.findall(
-                r'id="challenge" type="hidden" value="(.*?)">', response.text
-            )[0]
-        except IndexError:
-            try:
-                challenge = re.findall(
-                    r'id="captcha-input" type="hidden" value="(.*?)">', response.text
-                )[0]
-            except IndexError:
-                logger.debug(f"[challenge] 403 但未找到 challenge 字段, body[:200]={response.text[:200]}")
-                return False
+    @property
+    def profile(self) -> UaProfile:
+        return self._profile
 
-        logger.debug(f"[challenge] 正在处理 403 challenge...")
-        token, fp = get_token_and_fp(
-            challenge, self._ua, self._unmasked_vendor, self._unmasked_renderer
-        )
-        json_data = {'token': token, 'fp': fp, 'error': ''}
+    def _merge_cookies(self, resp) -> None:
+        for key, value in resp.cookies.items():
+            self._cookies[key] = value
+
+    def _solve_js_challenge(self, response) -> bool:
+        """本地求解 JS challenge 并提交 /abt/result"""
+        try:
+            result = solve_challenge(response.text, str(response.url), self._profile)
+        except Exception as e:
+            logger.debug(f"[challenge] 本地求解失败: {e}")
+            return False
+
         resp = self._session.post(
             'https://www.ozon.ru/abt/result',
             headers=self._ozon_headers,
-            json=json_data,
+            json=result.result_payload(),
             proxies=self._proxies,
         )
-        for key, value in resp.cookies.items():
-            self._cookies[key] = value
+        self._merge_cookies(resp)
+        logger.debug(f"[challenge] 本地求解已提交, status={resp.status_code} "
+                     f"pow={result.pow_ms}ms browser_2={result.browser_2}")
         return True
+
+    def _solve_js_challenge_remote(self, response) -> bool:
+        """回退：把 challenge 串交给外部服务换 token/fp"""
+        m = re.search(r'id="challenge" type="hidden" value="(.*?)">', response.text)
+        if not m:
+            return False
+        token, fp = get_token_and_fp(
+            m.group(1), self._profile.user_agent,
+            self._profile.unmasked_vendor, self._profile.unmasked_renderer,
+        )
+        if not token and not fp:
+            return False
+        resp = self._session.post(
+            'https://www.ozon.ru/abt/result',
+            headers=self._ozon_headers,
+            json={'token': token, 'fp': fp, 'error': ''},
+            proxies=self._proxies,
+        )
+        self._merge_cookies(resp)
+        logger.debug(f"[challenge] 远程求解已提交, status={resp.status_code}")
+        return True
+
+    def _solve_captcha(self, response) -> bool:
+        """滑块验证码页：本地识别滑块并提交 /abt/captcha/result"""
+        m = re.search(r'id="captcha-input" type="hidden" value="(.*?)">', response.text)
+        if not m:
+            return False
+        try:
+            result = build_captcha_result(m.group(1), self._profile.user_agent)
+        except Exception as e:
+            logger.debug(f"[captcha] 滑块求解失败: {e}")
+            return False
+
+        resp = self._session.post(
+            'https://www.ozon.ru/abt/captcha/result',
+            headers=self._ozon_headers,
+            json={'token': result['token'], 'fp': result['fp'], 'error': ''},
+            proxies=self._proxies,
+        )
+        self._merge_cookies(resp)
+        logger.debug(f"[captcha] 已提交, status={resp.status_code} slider_x={result['slider_x']}")
+        return True
+
+    def _handle_challenge(self, response) -> bool:
+        """
+        处理 403 关卡，返回 True 表示已处理（调用方应重试）。
+
+        不同出口 IP 下发的关卡不一样：JS 挑战页 / 滑块验证码页 / 直接封禁页，
+        三者的解法和提交地址都不同。
+        """
+        if response.status_code != 403:
+            return False
+
+        text = response.text
+        if is_js_challenge(text):
+            if settings.local_challenge and self._solve_js_challenge(response):
+                return True
+            if settings.challenge_remote_fallback:
+                return self._solve_js_challenge_remote(response)
+            return False
+
+        if 'id="captcha-input" type="hidden" value' in text:
+            return self._solve_captcha(response)
+
+        logger.debug(f"[challenge] 403 但未找到关卡字段, body[:200]={text[:200]}")
+        return False
 
     def _reset_session(self):
         """重置 session（遭遇封锁时）"""

@@ -1,0 +1,9 @@
+{
+  "name": "ozon-challenge-reference",
+  "version": "1.0.0",
+  "private": true,
+  "description": "原站 challenge 算法的 JS 参考实现，仅用于验证 Python 移植是否逐字节一致",
+  "dependencies": {
+    "crypto-js": "4.2.0"
+  }
+}
