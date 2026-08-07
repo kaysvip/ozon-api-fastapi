@@ -7,17 +7,22 @@ Ozon 滑块验证码计算模块 (纯 Python，不依赖 Node.js)
 """
 from loguru import logger
 import base64
-import hashlib
 import json
-import os as _os
 import random
 import struct
 import time
 
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad
-
 from services.ozon_captcha.slider_recognize import find_slider_offset, load_image_from_url
+from services.ozon_crypto import (
+    derive_kdf_key,
+    insert_marker,
+    js_json_dumps,
+    js_number_to_string,
+    kdf_encrypt,
+    md5_hex,
+    parse_challenge,
+    xor_with_token,
+)
 
 
 # ─────────────────── 工具函数 ───────────────────
@@ -174,60 +179,8 @@ def generate_captcha_data(target_x, captcha_info):
 
 
 # ─────────────────── 纯 Python 加密 ───────────────────
-
-def _md5_hex(s: str) -> str:
-    return hashlib.md5(s.encode('utf-8')).hexdigest()
-
-
-def _evp_bytes_to_key(password: bytes, salt: bytes, key_len: int, iv_len: int) -> tuple:
-    """OpenSSL EVP_BytesToKey (MD5), 与 CryptoJS.kdf.OpenSSL.execute 一致"""
-    derived = b''
-    block = b''
-    while len(derived) < key_len + iv_len:
-        block = hashlib.md5(block + password + salt).digest()
-        derived += block
-    return derived[:key_len], derived[key_len:key_len + iv_len]
-
-
-def _kdf_encrypt(text: str, key: str, key_length: int = 8, iv_length: int = 4) -> str:
-    """
-    复刻 CryptoJS OpenSSL KDF 加密:
-      - 随机 8 字节 salt
-      - EVP_BytesToKey 派生 key/iv
-      - AES-256-CBC + PKCS7 padding
-      - 输出 OpenSSL 格式: base64("Salted__" + salt + ciphertext)
-    """
-    password = key.encode('utf-8')
-    key_bytes = key_length * 4   # 8 words = 32 bytes = AES-256
-    iv_bytes = iv_length * 4     # 4 words = 16 bytes
-
-    salt = _os.urandom(8)
-    derived_key, iv = _evp_bytes_to_key(password, salt, key_bytes, iv_bytes)
-
-    cipher = AES.new(derived_key, AES.MODE_CBC, iv)
-    plaintext = text.encode('utf-8')
-    ciphertext = cipher.encrypt(pad(plaintext, AES.block_size))
-
-    openssl_data = b'Salted__' + salt + ciphertext
-    return base64.b64encode(openssl_data).decode()
-
-
-def _to_js_compat(obj):
-    """
-    递归转换 Python 值，使 json.dumps 输出与 JS JSON.stringify 完全一致。
-    核心差异: Python json.dumps(1.0) -> "1.0", JS JSON.stringify(1.0) -> "1"
-    """
-    if isinstance(obj, float):
-        if obj != obj:       # NaN
-            return None
-        if obj.is_integer():
-            return int(obj)  # 1.0 -> 1, 让 json.dumps 输出 "1" 而非 "1.0"
-        return obj
-    if isinstance(obj, dict):
-        return {k: _to_js_compat(v) for k, v in obj.items()}
-    if isinstance(obj, (list, tuple)):
-        return [_to_js_compat(v) for v in obj]
-    return obj
+#
+# 加密原语与 403 JS challenge 共用，统一放在 services/ozon_crypto.py。
 
 
 def get_params(captcha_input: str, user_agent: str, captcha_data: dict) -> dict:
@@ -235,18 +188,10 @@ def get_params(captcha_input: str, user_agent: str, captcha_data: dict) -> dict:
     纯 Python 实现, 等价于 ozon_result.js 的 get_params()。
     返回 {'fp': str, 'token': str}
     """
-    # ── getConfig: 用 latin-1 解码以匹配 JS atob() 行为 ──
-    decoded = base64.b64decode(captcha_input[3:]).decode('latin-1')
-    challenge_data = decoded.split(',')
+    challenge_data = parse_challenge(captcha_input)
 
-    random_key = str(random.random())
-    random_key_md5 = _md5_hex(random_key)
-    random_key_md5_1 = _md5_hex(random_key_md5[:4])
-    key = _md5_hex(random_key_md5_1 + challenge_data[2])
-
-    md5_num = sum(ord(c) for c in challenge_data[1]) % 4
-    for _ in range(md5_num):
-        key = _md5_hex(key)
+    random_key_md5 = md5_hex(js_number_to_string(random.random()))
+    key = derive_kdf_key(challenge_data, random_key_md5)
 
     # ── 构建 fp JSON (key 顺序与 JS 对象字面量一致) ──
     fp_obj = {
@@ -263,23 +208,15 @@ def get_params(captcha_input: str, user_agent: str, captcha_data: dict) -> dict:
         "ua": user_agent,
     }
 
-    # 转换浮点数格式以匹配 JS JSON.stringify
-    fp_obj = _to_js_compat(fp_obj)
-    fp_json = json.dumps(fp_obj, separators=(',', ':'), ensure_ascii=False)
+    # 数字格式必须和 JS JSON.stringify 完全一致（1.0 -> "1"，指数记法也不同）
+    fp_json = js_json_dumps(fp_obj)
 
-    # ── XOR: fp_json 每个字符与 token 循环异或 ──
-    fp_codes = [ord(c) for c in fp_json]
-    ns_arr = [ord(c) for c in challenge_data[2]]
-    encry_str = ''.join(chr(ns_arr[i % len(ns_arr)] ^ fp_codes[i]) for i in range(len(fp_codes)))
+    # ── XOR -> KDF 加密 -> 密文正中插入 random_key_md5[:4] ──
+    token = challenge_data[2]
+    fp_final = insert_marker(kdf_encrypt(xor_with_token(fp_json, token), key),
+                             random_key_md5[:4])
 
-    # ── KDF 加密 ──
-    fp_encrypted = _kdf_encrypt(encry_str, key)
-
-    # ── 在密文中间插入 random_key_md5[:4] ──
-    mid = len(fp_encrypted) // 2
-    fp_final = fp_encrypted[:mid] + random_key_md5[:4] + fp_encrypted[mid:]
-
-    return {'fp': fp_final, 'token': challenge_data[2]}
+    return {'fp': fp_final, 'token': token}
 
 
 DEFAULT_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36'
